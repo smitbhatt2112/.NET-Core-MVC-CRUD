@@ -1,0 +1,20 @@
+﻿@model Project_Management.Models.ProductsModel;
+@using System.Data;
+<form role="form" class="form-horizontal"  asp-controller="Products" asp-action="Save" enctype="multipart/form-data">
+    @Html.HiddenFor(x=>x.ProductId)
+    <h2>Product Name:</h2>
+       <input type="text" class="form-control " id="form_control_1" asp-for="ProductName" placeholder="Enter Product Name" autofocus>
+       <span asp-validation-for="ProductName" class="text-danger"></span>
+    <h2>Product Brand:</h2>
+    <input type="text" class="form-control " id="form_control_1" asp-for="ProductBrand" placeholder="Enter Product Brand" autofocus>
+    <span asp-validation-for="ProductBrand" class="text-danger"></span>
+
+    <h2>Product Manufacturer:</h2>
+    <input type="text" class="form-control " id="form_control_1" asp-for="ProductManufacturer" placeholder="Enter Product Manufacturer" autofocus>
+    <span asp-validation-for="ProductManufacturer" class="text-danger"></span>
+     <br />
+    <input type="submit" class="btn btn-success" />
+
+    <a class="btn btn-danger" asp-action="Index">Cancel</a>
+</form>
+
