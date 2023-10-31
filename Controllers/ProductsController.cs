@@ -89,7 +89,7 @@ namespace Project_Management.Controllers
             }
             string connectionstr = Configuration.GetConnectionString("myConnectionStrings");
             Products_DAL dalLOC = new Products_DAL();
-            if (modelProducts.Product.ProductId == null)
+            if (modelProducts.Product.ProductId == null )
             {
                 if (Convert.ToBoolean(dalLOC.pr_Products_Insert(connectionstr, modelProducts)))
                 {
