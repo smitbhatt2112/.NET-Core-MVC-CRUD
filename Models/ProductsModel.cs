@@ -4,7 +4,7 @@ namespace Project_Management.Models
 {
     public class ProductsModel
     {
-        public int? ProductId { get; set; }
+        public int ProductId { get; set; }
         [Required(ErrorMessage= "Product Name Required")]
         public string? ProductName { get; set; }
         [Required(ErrorMessage = "Product ProductBrand Required")]

@@ -39,13 +39,22 @@ namespace Project_Management.Controllers
 
                 if (dt.Rows.Count > 0)
                 {
-                    ProductsModel modelProducts = new ProductsModel();
+                    CombineModel modelProducts = new CombineModel();
+                    modelProducts.Product = new ProductsModel();  // Initialize Product
+                    modelProducts.ProductDetail = new Product_DetailsModel();  // Initialize ProductDetail
                     foreach (DataRow dr in dt.Rows)
                     {
-                        modelProducts.ProductId = Convert.ToInt32(dr["ProductId"]);
-                        modelProducts.ProductName = dr["ProductName"].ToString();
-                        modelProducts.ProductBrand = dr["ProductBrand"].ToString();
-                        modelProducts.ProductManufacturer = dr["ProductManufacturer"].ToString();
+                        modelProducts.Product.ProductId = Convert.ToInt32(dr["ProductId"]);
+                        modelProducts.Product.ProductName = dr["ProductName"].ToString();
+                        modelProducts.Product.ProductBrand = dr["ProductBrand"].ToString();
+                        modelProducts.Product.ProductManufacturer = dr["ProductManufacturer"].ToString();
+                        modelProducts.ProductDetail.ProductVarient= dr["ProductVariant"].ToString();
+                        modelProducts.ProductDetail.ProductColor = dr["ProductColor"].ToString();
+                        modelProducts.ProductDetail.ProductDes = dr["ProductDes"].ToString();
+                        modelProducts.ProductDetail.ProductCost = Convert.ToDecimal(dr["ProductCost"]);
+                        modelProducts.ProductDetail.ProductSalePrice = Convert.ToDecimal(dr["ProductSalePrice"]);
+                        modelProducts.ProductDetail.PhotoPath = dr["ProductImage"].ToString();
+
                     }
                     return View("AddProducts", modelProducts);
                 }
@@ -57,11 +66,30 @@ namespace Project_Management.Controllers
         #endregion
 
         #region Save
-        public IActionResult Save(ProductsModel modelProducts)
+        public IActionResult Save(CombineModel modelProducts)
         {
+            if (modelProducts.ProductDetail.File != null)
+            {
+                string FilePath = "wwwroot\\Upload";
+                string path = Path.Combine(Directory.GetCurrentDirectory(), FilePath);
+                /*Here, you're combining the current working directory of your application with the FilePath. This creates an absolute path to the directory where you want to save uploaded files.*/
+                if (!Directory.Exists(path))
+                    Directory.CreateDirectory(path);
+
+                string fileNamewithPath = Path.Combine(path, modelProducts.ProductDetail.File.FileName);
+                /*This line creates the full path (including the filename) where the uploaded file will be stored. It combines the path (the directory) with the name of the uploaded file, which is obtained from */
+                modelProducts.ProductDetail.PhotoPath = "~" + FilePath.Replace("wwwroot\\", "/") + "/" + modelProducts.ProductDetail.File.FileName;
+                using (var stream = new FileStream(fileNamewithPath, FileMode.Create))
+                {
+                    /*This line creates a new FileStream object. 
+                   fileNamewithPath is the path to the file where you want to copy the uploaded file.
+                   FileMode.Create specifies that if the file already exists, it should be overwritten; otherwise, a new file will be created. This prepares a stream for writing to the file.*/
+                    modelProducts.ProductDetail.File.CopyTo(stream);
+                }
+            }
             string connectionstr = Configuration.GetConnectionString("myConnectionStrings");
             Products_DAL dalLOC = new Products_DAL();
-            if (modelProducts.ProductId == null)
+            if (modelProducts.Product.ProductId == null)
             {
                 if (Convert.ToBoolean(dalLOC.pr_Products_Insert(connectionstr, modelProducts)))
                 {

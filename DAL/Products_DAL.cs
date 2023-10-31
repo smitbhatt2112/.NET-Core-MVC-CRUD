@@ -32,15 +32,21 @@ namespace Project_Management.DAL
         #endregion
 
         #region Products Insert
-        public bool? pr_Products_Insert(string conn,ProductsModel model_Products)
+        public bool? pr_Products_Insert(string conn,CombineModel model_Products)
         {
             try
             {
                 SqlDatabase sqlDB = new SqlDatabase(conn);
                 DbCommand dbCMD = sqlDB.GetStoredProcCommand("PR_Products_Insert");
-                sqlDB.AddInParameter(dbCMD, "ProductName", SqlDbType.NVarChar, model_Products.ProductName);
-                sqlDB.AddInParameter(dbCMD, "ProductBrand", SqlDbType.NVarChar,model_Products.ProductBrand);
-                sqlDB.AddInParameter(dbCMD, "ProductManufacturer", SqlDbType.NVarChar, model_Products.ProductManufacturer);
+                sqlDB.AddInParameter(dbCMD, "ProductName", SqlDbType.NVarChar, model_Products.Product.ProductName);
+                sqlDB.AddInParameter(dbCMD, "ProductBrand", SqlDbType.NVarChar,model_Products.Product.ProductBrand);
+                sqlDB.AddInParameter(dbCMD, "ProductManufacturer", SqlDbType.NVarChar, model_Products.Product.ProductManufacturer);
+                sqlDB.AddInParameter(dbCMD, "ProductVariant", SqlDbType.NVarChar, model_Products.ProductDetail.ProductVarient);
+                sqlDB.AddInParameter(dbCMD, "ProductColor", SqlDbType.NVarChar, model_Products.ProductDetail.ProductColor);
+                sqlDB.AddInParameter(dbCMD, "ProductDes", SqlDbType.NVarChar, model_Products.ProductDetail.ProductDes);
+                sqlDB.AddInParameter(dbCMD, "ProductCost", SqlDbType.Decimal, model_Products.ProductDetail.ProductCost);
+                sqlDB.AddInParameter(dbCMD, "ProductSalePrice", SqlDbType.Decimal, model_Products.ProductDetail.ProductSalePrice);
+                sqlDB.AddInParameter(dbCMD, "ProductImage", SqlDbType.NVarChar, model_Products.ProductDetail.PhotoPath);
                 DataTable dt = new DataTable();
                 int vReturnValue = sqlDB.ExecuteNonQuery(dbCMD);
                 return (vReturnValue == -1 ? false : true);
@@ -53,16 +59,23 @@ namespace Project_Management.DAL
         #endregion
 
         #region Products Update
-        public bool? pr_Products_Update(string conn, ProductsModel model_Products)
+        public bool? pr_Products_Update(string conn, CombineModel model_Products)
         {
             try
             {
                 SqlDatabase sqlDB = new SqlDatabase(conn);
                 DbCommand dbCMD = sqlDB.GetStoredProcCommand("PR_Products_Update");
-                sqlDB.AddInParameter(dbCMD, "ProductID", SqlDbType.Int, model_Products.ProductId);
-                sqlDB.AddInParameter(dbCMD, "ProductName", SqlDbType.NVarChar, model_Products.ProductName);
-                sqlDB.AddInParameter(dbCMD, "ProductBrand", SqlDbType.NVarChar, model_Products.ProductBrand);
-                sqlDB.AddInParameter(dbCMD, "ProductManufacturer", SqlDbType.NVarChar, model_Products.ProductManufacturer);
+                sqlDB.AddInParameter(dbCMD, "ProductID", SqlDbType.Int, model_Products.Product.ProductId);
+                sqlDB.AddInParameter(dbCMD, "ProductName", SqlDbType.NVarChar, model_Products.Product.ProductName);
+                sqlDB.AddInParameter(dbCMD, "ProductBrand", SqlDbType.NVarChar, model_Products.Product.ProductBrand);
+                sqlDB.AddInParameter(dbCMD, "ProductManufacturer", SqlDbType.NVarChar, model_Products.Product.ProductManufacturer);
+                sqlDB.AddInParameter(dbCMD, "ProductVariant", SqlDbType.NVarChar, model_Products.ProductDetail.ProductVarient);
+                sqlDB.AddInParameter(dbCMD, "ProductColor", SqlDbType.NVarChar, model_Products.ProductDetail.ProductColor);
+                sqlDB.AddInParameter(dbCMD, "ProductDes", SqlDbType.NVarChar, model_Products.ProductDetail.ProductDes);
+                sqlDB.AddInParameter(dbCMD, "ProductCost", SqlDbType.Decimal, model_Products.ProductDetail.ProductCost);
+                sqlDB.AddInParameter(dbCMD, "ProductSalePrice", SqlDbType.Decimal, model_Products.ProductDetail.ProductSalePrice);
+                sqlDB.AddInParameter(dbCMD, "ProductImage", SqlDbType.NVarChar, model_Products.ProductDetail.PhotoPath);
+
                 DataTable dt = new DataTable();
                 int vReturnValue = sqlDB.ExecuteNonQuery(dbCMD);
                 return (vReturnValue == -1 ? false : true);
